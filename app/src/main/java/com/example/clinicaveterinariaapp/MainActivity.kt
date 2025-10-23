@@ -80,7 +80,7 @@ fun LoginScreen(vm: VistaModeloInicioSesion, onLoginSuccess: (Boolean) -> Unit =
                         .padding(top = 4.dp)
                 )
             }
-
+//
             // Campo de texto para la contraseña
             Spacer(modifier = Modifier.height(12.dp))
             OutlinedTextField(
