@@ -1,8 +1,8 @@
 package com.example.clinicaveterinariaapp
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Person
@@ -22,7 +22,6 @@ fun PantallaReservas(vm: VistaModeloReserva) {
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
 
-    // Obtener nombres de especialistas dinámicamente desde el repositorio (no recordar)
     val especialistas = RepositorioProfesionales.obtenerNombres()
     var menuEspecialista by remember { mutableStateOf(false) }
 
@@ -30,13 +29,17 @@ fun PantallaReservas(vm: VistaModeloReserva) {
         topBar = { TopAppBar(title = { Text("Reservas - Veterinaria") }) },
         snackbarHost = { SnackbarHost(snackbarHostState) }
     ) { padding ->
-        Column(modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp)
-            .padding(padding)) {
-
-            Text(text = "Nueva reserva", style = MaterialTheme.typography.titleMedium)
-            Spacer(modifier = Modifier.height(8.dp))
+        // 👇 Scroll general para todo el contenido
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState())
+                .padding(16.dp)
+                .padding(padding)
+        ) {
+            // --- FORMULARIO ---
+            Text("Nueva reserva", style = MaterialTheme.typography.titleMedium)
+            Spacer(Modifier.height(8.dp))
 
             OutlinedTextField(
                 value = vm.nombreMascota,
@@ -46,9 +49,10 @@ fun PantallaReservas(vm: VistaModeloReserva) {
                 isError = vm.errorNombreMascota != null,
                 leadingIcon = { Icon(Icons.Filled.Person, contentDescription = null) }
             )
-            if (vm.errorNombreMascota != null) Text(vm.errorNombreMascota ?: "", color = MaterialTheme.colorScheme.error)
+            if (vm.errorNombreMascota != null)
+                Text(vm.errorNombreMascota ?: "", color = MaterialTheme.colorScheme.error)
 
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(Modifier.height(8.dp))
 
             OutlinedTextField(
                 value = vm.nombrePropietario,
@@ -57,9 +61,10 @@ fun PantallaReservas(vm: VistaModeloReserva) {
                 modifier = Modifier.fillMaxWidth(),
                 isError = vm.errorNombrePropietario != null
             )
-            if (vm.errorNombrePropietario != null) Text(vm.errorNombrePropietario ?: "", color = MaterialTheme.colorScheme.error)
+            if (vm.errorNombrePropietario != null)
+                Text(vm.errorNombrePropietario ?: "", color = MaterialTheme.colorScheme.error)
 
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(Modifier.height(8.dp))
 
             OutlinedTextField(
                 value = vm.contacto,
@@ -68,11 +73,15 @@ fun PantallaReservas(vm: VistaModeloReserva) {
                 modifier = Modifier.fillMaxWidth(),
                 isError = vm.errorContacto != null
             )
-            if (vm.errorContacto != null) Text(vm.errorContacto ?: "", color = MaterialTheme.colorScheme.error)
+            if (vm.errorContacto != null)
+                Text(vm.errorContacto ?: "", color = MaterialTheme.colorScheme.error)
 
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(Modifier.height(8.dp))
 
-            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
                 OutlinedTextField(
                     value = vm.fecha,
                     onValueChange = { vm.alCambiarFecha(it) },
@@ -80,7 +89,6 @@ fun PantallaReservas(vm: VistaModeloReserva) {
                     modifier = Modifier.weight(1f),
                     isError = vm.errorFecha != null
                 )
-
                 OutlinedTextField(
                     value = vm.hora,
                     onValueChange = { vm.alCambiarHora(it) },
@@ -89,11 +97,14 @@ fun PantallaReservas(vm: VistaModeloReserva) {
                     isError = vm.errorHora != null
                 )
             }
-            if (vm.errorFecha != null) Text(vm.errorFecha ?: "", color = MaterialTheme.colorScheme.error)
-            if (vm.errorHora != null) Text(vm.errorHora ?: "", color = MaterialTheme.colorScheme.error)
+            if (vm.errorFecha != null)
+                Text(vm.errorFecha ?: "", color = MaterialTheme.colorScheme.error)
+            if (vm.errorHora != null)
+                Text(vm.errorHora ?: "", color = MaterialTheme.colorScheme.error)
 
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(Modifier.height(8.dp))
 
+            // --- Especialista ---
             Box {
                 OutlinedTextField(
                     value = vm.especialista,
@@ -108,15 +119,26 @@ fun PantallaReservas(vm: VistaModeloReserva) {
                     },
                     isError = vm.errorEspecialista != null
                 )
-                DropdownMenu(expanded = menuEspecialista, onDismissRequest = { menuEspecialista = false }) {
+
+                DropdownMenu(
+                    expanded = menuEspecialista,
+                    onDismissRequest = { menuEspecialista = false }
+                ) {
                     especialistas.forEach { s ->
-                        DropdownMenuItem(text = { Text(s) }, onClick = { vm.alCambiarEspecialista(s); menuEspecialista = false })
+                        DropdownMenuItem(
+                            text = { Text(s) },
+                            onClick = {
+                                vm.alCambiarEspecialista(s)
+                                menuEspecialista = false
+                            }
+                        )
                     }
                 }
             }
-            if (vm.errorEspecialista != null) Text(vm.errorEspecialista ?: "", color = MaterialTheme.colorScheme.error)
+            if (vm.errorEspecialista != null)
+                Text(vm.errorEspecialista ?: "", color = MaterialTheme.colorScheme.error)
 
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(Modifier.height(8.dp))
 
             OutlinedTextField(
                 value = vm.notas,
@@ -125,63 +147,99 @@ fun PantallaReservas(vm: VistaModeloReserva) {
                 modifier = Modifier.fillMaxWidth()
             )
 
-            Spacer(modifier = Modifier.height(12.dp))
+            Spacer(Modifier.height(12.dp))
 
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                Button(onClick = {
-                    val sdfFecha = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-                    val sdfHora = SimpleDateFormat("HH:mm", Locale.getDefault())
-                    val ahora = Date()
-                    vm.alCambiarFecha(sdfFecha.format(ahora))
-                    vm.alCambiarHora(sdfHora.format(ahora))
-                }, enabled = !vm.estaCargando) { Text("Hoy ahora") }
+                Button(
+                    onClick = {
+                        val sdfFecha = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+                        val sdfHora = SimpleDateFormat("HH:mm", Locale.getDefault())
+                        val ahora = Date()
+                        vm.alCambiarFecha(sdfFecha.format(ahora))
+                        vm.alCambiarHora(sdfHora.format(ahora))
+                    },
+                    enabled = !vm.estaCargando
+                ) {
+                    Text("Hoy ahora")
+                }
 
-                Button(onClick = {
-                    vm.crearReserva { exito, mensaje ->
-                        scope.launch { snackbarHostState.showSnackbar(mensaje ?: if (exito) "Reserva creada" else "Error") }
-                    }
-                }, enabled = !vm.estaCargando) {
-                    if (vm.estaCargando) CircularProgressIndicator(modifier = Modifier.size(18.dp))
+                Button(
+                    onClick = {
+                        vm.crearReserva { exito, mensaje ->
+                            scope.launch {
+                                snackbarHostState.showSnackbar(
+                                    mensaje ?: if (exito) "Reserva creada" else "Error"
+                                )
+                            }
+                        }
+                    },
+                    enabled = !vm.estaCargando
+                ) {
+                    if (vm.estaCargando)
+                        CircularProgressIndicator(modifier = Modifier.size(18.dp))
                     Text("Reservar", modifier = Modifier.padding(start = 6.dp))
                 }
             }
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(Modifier.height(16.dp))
 
-            Text(text = "Historial de reservas", style = MaterialTheme.typography.titleMedium)
-            Spacer(modifier = Modifier.height(8.dp))
+            // --- HISTORIAL DE RESERVAS ---
+            Text("Historial de reservas", style = MaterialTheme.typography.titleMedium)
+            Spacer(Modifier.height(8.dp))
 
             if (vm.reservas.isEmpty()) {
-                Text(text = "No hay reservas aún.")
+                Text("No hay reservas aún.")
             } else {
-                LazyColumn(modifier = Modifier.fillMaxHeight()) {
-                    items(vm.reservas) { r ->
-                        Card(modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(vertical = 4.dp)
-                        ) {
-                            Row(modifier = Modifier
+                // 👇 Como no hay LazyColumn, usamos Column con forEach
+                Column {
+                    vm.reservas.forEach { r ->
+                        Card(
+                            modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(12.dp), verticalAlignment = Alignment.CenterVertically) {
+                                .padding(vertical = 4.dp)
+                        ) {
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(12.dp),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
                                 Column(modifier = Modifier.weight(1f)) {
-                                    Text(text = "${r.nombreMascota} - ${r.nombrePropietario}", style = MaterialTheme.typography.bodyLarge)
-                                    Text(text = "${r.fecha} ${r.hora} - ${r.especialista}", style = MaterialTheme.typography.bodySmall)
-                                    Text(text = "Estado: ${r.estado}", style = MaterialTheme.typography.bodySmall)
+                                    Text(
+                                        "${r.nombreMascota} - ${r.nombrePropietario}",
+                                        style = MaterialTheme.typography.bodyLarge
+                                    )
+                                    Text(
+                                        "${r.fecha} ${r.hora} - ${r.especialista}",
+                                        style = MaterialTheme.typography.bodySmall
+                                    )
+                                    Text(
+                                        "Estado: ${r.estado}",
+                                        style = MaterialTheme.typography.bodySmall
+                                    )
                                 }
-                                Column(horizontalAlignment = Alignment.End) {
-                                    if (r.estado == EstadoReserva.AGENDADA) {
-                                        TextButton(onClick = {
+                                if (r.estado == EstadoReserva.AGENDADA) {
+                                    TextButton(
+                                        onClick = {
                                             vm.cancelarReserva(r.id) { exito, mensaje ->
-                                                scope.launch { snackbarHostState.showSnackbar(mensaje ?: if (exito) "Reserva cancelada" else "Error") }
+                                                scope.launch {
+                                                    snackbarHostState.showSnackbar(
+                                                        mensaje ?: if (exito)
+                                                            "Reserva cancelada"
+                                                        else "Error"
+                                                    )
+                                                }
                                             }
-                                        }) { Text("Cancelar") }
-                                    }
+                                        }
+                                    ) { Text("Cancelar") }
                                 }
                             }
                         }
                     }
                 }
             }
+
+            Spacer(Modifier.height(24.dp))
         }
     }
 }
