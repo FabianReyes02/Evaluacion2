@@ -22,14 +22,14 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             // Manejo simple de estado: mostrar login o pantalla de reservas
-            val loginVm = LoginViewModel()
+            val loginVm = VistaModeloInicioSesion()
             var loggedIn by remember { mutableStateOf(false) }
 
             if (!loggedIn) {
                 LoginScreen(vm = loginVm, onLoginSuccess = { success -> if (success) loggedIn = true })
             } else {
-                val resVm = ReservationViewModel()
-                ReservationScreen(vm = resVm)
+                val resVm = VistaModeloReserva()
+                PantallaReservas(vm = resVm)
             }
         }
     }
@@ -38,7 +38,7 @@ class MainActivity : ComponentActivity() {
 // Composición de la pantalla de Login (consume el ViewModel)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LoginScreen(vm: LoginViewModel, onLoginSuccess: (Boolean) -> Unit = {}) {
+fun LoginScreen(vm: VistaModeloInicioSesion, onLoginSuccess: (Boolean) -> Unit = {}) {
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
 
@@ -62,17 +62,17 @@ fun LoginScreen(vm: LoginViewModel, onLoginSuccess: (Boolean) -> Unit = {}) {
 
             // Campo de texto para el correo electrónico
             OutlinedTextField(
-                value = vm.email,
-                onValueChange = { vm.onEmailChange(it) },
+                value = vm.correo,
+                onValueChange = { vm.alCambiarCorreo(it) },
                 label = { Text("Correo electrónico") },
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true,
-                isError = vm.emailError != null,
+                isError = vm.errorCorreo != null,
                 leadingIcon = { Icon(Icons.Filled.Email, contentDescription = null) }
             )
-            if (vm.emailError != null) {
+            if (vm.errorCorreo != null) {
                 Text(
-                    text = vm.emailError ?: "",
+                    text = vm.errorCorreo ?: "",
                     color = MaterialTheme.colorScheme.error,
                     style = MaterialTheme.typography.bodySmall,
                     modifier = Modifier
@@ -84,18 +84,18 @@ fun LoginScreen(vm: LoginViewModel, onLoginSuccess: (Boolean) -> Unit = {}) {
             // Campo de texto para la contraseña
             Spacer(modifier = Modifier.height(12.dp))
             OutlinedTextField(
-                value = vm.password,
-                onValueChange = { vm.onPasswordChange(it) },
+                value = vm.contrasena,
+                onValueChange = { vm.alCambiarContrasena(it) },
                 label = { Text("Contraseña") },
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true,
-                isError = vm.passwordError != null,
+                isError = vm.errorContrasena != null,
                 visualTransformation = PasswordVisualTransformation(),
                 leadingIcon = { Icon(Icons.Filled.Lock, contentDescription = null) }
             )
-            if (vm.passwordError != null) {
+            if (vm.errorContrasena != null) {
                 Text(
-                    text = vm.passwordError ?: "",
+                    text = vm.errorContrasena ?: "",
                     color = MaterialTheme.colorScheme.error,
                     style = MaterialTheme.typography.bodySmall,
                     modifier = Modifier
@@ -110,7 +110,7 @@ fun LoginScreen(vm: LoginViewModel, onLoginSuccess: (Boolean) -> Unit = {}) {
             // Botón de inicio de sesión
             Button(
                 onClick = {
-                    vm.login { success, message ->
+                    vm.iniciarSesion { success, message ->
                         scope.launch {
                             snackbarHostState.showSnackbar(message ?: if (success) "Inicio de sesión correcto" else "Error")
                         }
@@ -118,9 +118,9 @@ fun LoginScreen(vm: LoginViewModel, onLoginSuccess: (Boolean) -> Unit = {}) {
                     }
                 },
                 modifier = Modifier.fillMaxWidth(),
-                enabled = !vm.isLoading
+                enabled = !vm.estaCargando
             ) {
-                if (vm.isLoading) {
+                if (vm.estaCargando) {
                     CircularProgressIndicator(
                         modifier = Modifier
                             .size(18.dp)
@@ -149,6 +149,6 @@ fun LoginScreen(vm: LoginViewModel, onLoginSuccess: (Boolean) -> Unit = {}) {
 @Preview(showBackground = true)
 @Composable
 fun PreviewLoginScreen() {
-    LoginScreen(vm = LoginViewModel())
+    LoginScreen(vm = VistaModeloInicioSesion())
 }
 //avance00000000

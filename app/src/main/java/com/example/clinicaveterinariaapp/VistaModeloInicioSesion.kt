@@ -10,7 +10,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 /**
- * ViewModel (en español) que contiene la lógica de validación y estado para el inicio de sesión.
+ * ViewModel que contiene la lógica de validación y estado para el inicio de sesión.
  */
 class VistaModeloInicioSesion : ViewModel() {
     var correo by mutableStateOf("")

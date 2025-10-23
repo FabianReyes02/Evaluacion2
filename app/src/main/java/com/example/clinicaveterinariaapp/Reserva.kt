@@ -1,6 +1,6 @@
 package com.example.clinicaveterinariaapp
 
-/** Modelo simple para una reserva de atención veterinaria (en español) */
+/** Modelo simple para una reserva de atención veterinaria  */
 
 data class Reserva(
     val id: String,

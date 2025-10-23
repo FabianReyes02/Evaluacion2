@@ -46,6 +46,29 @@ class VistaModeloUsuarios : ViewModel() {
 
     fun validarTodo(): Boolean { return validarCorreo() && validarContrasena() }
 
+    fun iniciarSesion(onResultado: (Boolean, String?) -> Unit) {
+        if (!validarTodo()) {
+            onResultado(false, "Corrige los errores")
+            return
+        }
+
+        estaCargando = true
+        viewModelScope.launch {
+            delay(300)
+            val usuario = RepositorioUsuarios.obtenerTodos()
+                .find { it.correo.equals(correo.trim(), ignoreCase = true) && it.contrasena == contrasena }
+
+            estaCargando = false
+            if (usuario != null) {
+                onResultado(true, "Inicio de sesión correcto")
+                limpiarFormulario()
+            } else {
+                onResultado(false, "Correo o contraseña incorrectos")
+            }
+        }
+    }
+
+
     fun crearUsuario(onResultado: (Boolean, String?) -> Unit) {
         if (!validarTodo()) { onResultado(false, "Corrige los errores"); return }
         estaCargando = true
