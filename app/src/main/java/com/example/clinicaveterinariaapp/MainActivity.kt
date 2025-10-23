@@ -109,7 +109,7 @@ fun LoginScreen(vm: VistaModeloInicioSesion, onLoginSuccess: (Boolean) -> Unit =
 
             // Botón de inicio de sesión
             Button(
-                onClick = {
+                onClick = {//
                     vm.iniciarSesion { success, message ->
                         scope.launch {
                             snackbarHostState.showSnackbar(message ?: if (success) "Inicio de sesión correcto" else "Error")
