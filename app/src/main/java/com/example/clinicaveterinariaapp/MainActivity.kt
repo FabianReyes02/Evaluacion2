@@ -3,152 +3,71 @@ package com.example.clinicaveterinariaapp
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.*
-import androidx.compose.material3.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Email
-import androidx.compose.material.icons.filled.Lock
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import androidx.compose.runtime.* // <-- Esto es importante
-import androidx.compose.ui.text.input.PasswordVisualTransformation
-import kotlinx.coroutines.launch
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.runtime.Composable
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 
-@OptIn(ExperimentalMaterial3Api::class)
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            // Manejo simple de estado: mostrar login o pantalla de reservas
+            AppNavigation()
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun AppNavigation() {
+    val navController = rememberNavController()
+
+    NavHost(navController = navController, startDestination = "login") {
+        composable("login") {
             val loginVm = VistaModeloInicioSesion()
-            var loggedIn by remember { mutableStateOf(false) }
-
-            if (!loggedIn) {
-                LoginScreen(vm = loginVm, onLoginSuccess = { success -> if (success) loggedIn = true })
-            } else {
+            LoginScreen(
+                vm = loginVm,
+                navController = navController
+            )
+        }
+        composable("registro") { // Nueva ruta
+            val userVm = VistaModeloUsuarios()
+            PantallaRegistro(navController = navController, vm = userVm)
+        }
+        composable("menu") {
+            PantallaMenu(navController = navController)
+        }
+        composable("reservas") {
+            Scaffold(
+                topBar = { TopAppBar(title = { Text("Reservas") }, navigationIcon = { IconButton(onClick = { navController.popBackStack() }) { Icon(Icons.AutoMirrored.Filled.ArrowBack, "Volver") } }) }
+            ) { innerPadding ->
                 val resVm = VistaModeloReserva()
-                PantallaReservas(vm = resVm)
+                PantallaReservas(vm = resVm, innerPadding = innerPadding)
+            }
+        }
+        composable("usuarios") {
+            Scaffold(
+                topBar = { TopAppBar(title = { Text("Usuarios") }, navigationIcon = { IconButton(onClick = { navController.popBackStack() }) { Icon(Icons.AutoMirrored.Filled.ArrowBack, "Volver") } }) }
+            ) { innerPadding ->
+                val userVm = VistaModeloUsuarios()
+                PantallaUsuarios(vm = userVm, innerPadding = innerPadding)
+            }
+        }
+        composable("profesionales") {
+            Scaffold(
+                topBar = { TopAppBar(title = { Text("Profesionales") }, navigationIcon = { IconButton(onClick = { navController.popBackStack() }) { Icon(Icons.AutoMirrored.Filled.ArrowBack, "Volver") } }) }
+            ) { innerPadding ->
+                val profVm = VistaModeloProfesionales()
+                PantallaProfesionales(vm = profVm, innerPadding = innerPadding)
             }
         }
     }
 }
-
-// Composición de la pantalla de Login (consume el ViewModel)
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun LoginScreen(vm: VistaModeloInicioSesion, onLoginSuccess: (Boolean) -> Unit = {}) {
-    val snackbarHostState = remember { SnackbarHostState() }
-    val scope = rememberCoroutineScope()
-
-    Scaffold(
-        snackbarHost = { SnackbarHost(snackbarHostState) }
-    ) { padding ->
-        // Column es un contenedor que alinea los elementos verticalmente
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(16.dp)
-                .padding(padding),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ) {
-            // Título de la pantalla
-            Text(text = "Bienvenido a VetApp \uD83D\uDC3E", style = MaterialTheme.typography.headlineMedium)
-
-            // Espacio entre los elementos
-            Spacer(modifier = Modifier.height(32.dp))
-
-            // Campo de texto para el correo electrónico
-            OutlinedTextField(
-                value = vm.correo,
-                onValueChange = { vm.alCambiarCorreo(it) },
-                label = { Text("Correo electrónico") },
-                modifier = Modifier.fillMaxWidth(),
-                singleLine = true,
-                isError = vm.errorCorreo != null,
-                leadingIcon = { Icon(Icons.Filled.Email, contentDescription = null) }
-            )
-            if (vm.errorCorreo != null) {
-                Text(
-                    text = vm.errorCorreo ?: "",
-                    color = MaterialTheme.colorScheme.error,
-                    style = MaterialTheme.typography.bodySmall,
-                    modifier = Modifier
-                        .align(Alignment.Start)
-                        .padding(top = 4.dp)
-                )
-            }
-//
-            // Campo de texto para la contraseña
-            Spacer(modifier = Modifier.height(12.dp))
-            OutlinedTextField(
-                value = vm.contrasena,
-                onValueChange = { vm.alCambiarContrasena(it) },
-                label = { Text("Contraseña") },
-                modifier = Modifier.fillMaxWidth(),
-                singleLine = true,
-                isError = vm.errorContrasena != null,
-                visualTransformation = PasswordVisualTransformation(),
-                leadingIcon = { Icon(Icons.Filled.Lock, contentDescription = null) }
-            )
-            if (vm.errorContrasena != null) {
-                Text(
-                    text = vm.errorContrasena ?: "",
-                    color = MaterialTheme.colorScheme.error,
-                    style = MaterialTheme.typography.bodySmall,
-                    modifier = Modifier
-                        .align(Alignment.Start)
-                        .padding(top = 4.dp)
-                )
-            }
-
-            // Espacio entre los campos y el botón
-            Spacer(modifier = Modifier.height(16.dp))
-
-            // Botón de inicio de sesión
-            Button(
-                onClick = {//
-                    vm.iniciarSesion { success, message ->
-                        scope.launch {
-                            snackbarHostState.showSnackbar(message ?: if (success) "Inicio de sesión correcto" else "Error")
-                        }
-                        if (success) onLoginSuccess(true)
-                    }
-                },
-                modifier = Modifier.fillMaxWidth(),
-                enabled = !vm.estaCargando
-            ) {
-                if (vm.estaCargando) {
-                    CircularProgressIndicator(
-                        modifier = Modifier
-                            .size(18.dp)
-                            .padding(end = 8.dp),
-                        strokeWidth = 2.dp,
-                        color = MaterialTheme.colorScheme.onPrimary
-                    )
-                }
-                Text("Iniciar sesión")
-            }
-
-            // Texto para ir al registro
-            Spacer(modifier = Modifier.height(12.dp))
-            TextButton(
-                onClick = { /* Aquí va la lógica para registro */ },
-                modifier = Modifier.align(Alignment.CenterHorizontally)
-            ) {
-                Text(text = "¿No tienes cuenta? Regístrate", color = MaterialTheme.colorScheme.primary)
-            }
-        }
-    }
-}
-
-// Preview para ver cómo se verá en el diseño
-@OptIn(ExperimentalMaterial3Api::class)
-@Preview(showBackground = true)
-@Composable
-fun PreviewLoginScreen() {
-    LoginScreen(vm = VistaModeloInicioSesion())
-}
-//avance00000000

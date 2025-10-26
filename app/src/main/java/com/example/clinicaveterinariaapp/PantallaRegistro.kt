@@ -2,8 +2,10 @@ package com.example.clinicaveterinariaapp
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Lock
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -11,31 +13,50 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LoginScreen(vm: VistaModeloInicioSesion, navController: NavController) {
+fun PantallaRegistro(navController: NavController, vm: VistaModeloUsuarios) {
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
 
     Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text("Crear Nueva Cuenta") },
+                navigationIcon = {
+                    IconButton(onClick = { navController.popBackStack() }) {
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Volver")
+                    }
+                }
+            )
+        },
         snackbarHost = { SnackbarHost(snackbarHostState) }
     ) { padding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(16.dp)
-                .padding(padding),
+                .padding(padding)
+                .padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            Text(text = "Bienvenido a VetApp 🐾", style = MaterialTheme.typography.headlineMedium)
-            Spacer(modifier = Modifier.height(32.dp))
+            OutlinedTextField(
+                value = vm.nombre,
+                onValueChange = { vm.alCambiarNombre(it) },
+                label = { Text("Nombre completo") },
+                modifier = Modifier.fillMaxWidth(),
+                singleLine = true,
+                leadingIcon = { Icon(Icons.Filled.Person, contentDescription = null) }
+            )
+            if (vm.errorNombre != null) {
+                Text(vm.errorNombre ?: "", color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodySmall)
+            }
+
+            Spacer(modifier = Modifier.height(12.dp))
 
             OutlinedTextField(
                 value = vm.correo,
@@ -47,12 +68,7 @@ fun LoginScreen(vm: VistaModeloInicioSesion, navController: NavController) {
                 leadingIcon = { Icon(Icons.Filled.Email, contentDescription = null) }
             )
             if (vm.errorCorreo != null) {
-                Text(
-                    text = vm.errorCorreo ?: "",
-                    color = MaterialTheme.colorScheme.error,
-                    style = MaterialTheme.typography.bodySmall,
-                    modifier = Modifier.align(Alignment.Start).padding(top = 4.dp)
-                )
+                Text(vm.errorCorreo ?: "", color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodySmall)
             }
 
             Spacer(modifier = Modifier.height(12.dp))
@@ -67,26 +83,19 @@ fun LoginScreen(vm: VistaModeloInicioSesion, navController: NavController) {
                 leadingIcon = { Icon(Icons.Filled.Lock, contentDescription = null) }
             )
             if (vm.errorContrasena != null) {
-                Text(
-                    text = vm.errorContrasena ?: "",
-                    color = MaterialTheme.colorScheme.error,
-                    style = MaterialTheme.typography.bodySmall,
-                    modifier = Modifier.align(Alignment.Start).padding(top = 4.dp)
-                )
+                Text(vm.errorContrasena ?: "", color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodySmall)
             }
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(24.dp))
 
             Button(
                 onClick = {
-                    vm.iniciarSesion { success, message ->
+                    vm.crearUsuario { exito, mensaje ->
                         scope.launch {
-                            snackbarHostState.showSnackbar(message ?: if (success) "Inicio de sesión correcto" else "Error")
+                            snackbarHostState.showSnackbar(mensaje ?: "")
                         }
-                        if (success) {
-                            navController.navigate("menu") {
-                                popUpTo("login") { inclusive = true }
-                            }
+                        if (exito) {
+                            navController.popBackStack() // Volver al login
                         }
                     }
                 },
@@ -94,30 +103,10 @@ fun LoginScreen(vm: VistaModeloInicioSesion, navController: NavController) {
                 enabled = !vm.estaCargando
             ) {
                 if (vm.estaCargando) {
-                    CircularProgressIndicator(
-                        modifier = Modifier.size(18.dp).padding(end = 8.dp),
-                        strokeWidth = 2.dp,
-                        color = MaterialTheme.colorScheme.onPrimary
-                    )
+                    CircularProgressIndicator(modifier = Modifier.size(18.dp).padding(end = 8.dp))
                 }
-                Text("Iniciar sesión")
-            }
-
-            Spacer(modifier = Modifier.height(12.dp))
-            TextButton(
-                onClick = { navController.navigate("registro") },
-                modifier = Modifier.align(Alignment.CenterHorizontally)
-            ) {
-                Text(text = "¿No tienes cuenta? Regístrate", color = MaterialTheme.colorScheme.primary)
+                Text("Registrarme")
             }
         }
     }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Preview(showBackground = true)
-@Composable
-fun PreviewLoginScreen() {
-    val navController = rememberNavController()
-    LoginScreen(vm = VistaModeloInicioSesion(), navController = navController)
 }
