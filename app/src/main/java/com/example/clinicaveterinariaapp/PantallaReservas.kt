@@ -17,17 +17,21 @@ import java.util.*
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PantallaReservas(vm: VistaModeloReserva, innerPadding: PaddingValues) {
-    var menuEspecialista by remember { mutableStateOf(false) }
-    val especialistas = RepositorioProfesionales.obtenerNombres()
+fun PantallaReservas(vm: VistaModeloReserva, innerPadding: PaddingValues, onShowSnackbar: (String) -> Unit) {
 
+    val especialistas = RepositorioProfesionales.obtenerNombres()
+    var menuEspecialista by remember { mutableStateOf(false) }
+
+    // El Scaffold y TopAppBar ahora están en MainActivity.
+    // Aplicamos el innerPadding que nos llega y añadimos un scroll vertical.
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(innerPadding) // Se aplica el padding del Scaffold principal
+            .padding(innerPadding) // Padding del Scaffold principal
             .verticalScroll(rememberScrollState())
-            .padding(16.dp) // Padding interno del contenido
+            .padding(16.dp) // Padding para el contenido interno
     ) {
+        // --- FORMULARIO ---
         Text("Nueva reserva", style = MaterialTheme.typography.titleMedium)
         Spacer(Modifier.height(8.dp))
 
@@ -55,13 +59,172 @@ fun PantallaReservas(vm: VistaModeloReserva, innerPadding: PaddingValues) {
             Text(vm.errorNombrePropietario ?: "", color = MaterialTheme.colorScheme.error)
 
         Spacer(Modifier.height(8.dp))
-        // ... (resto del formulario y la lista, sin cambios)
+
+        OutlinedTextField(
+            value = vm.contacto,
+            onValueChange = { vm.alCambiarContacto(it) },
+            label = { Text("Contacto (teléfono)") },
+            modifier = Modifier.fillMaxWidth(),
+            isError = vm.errorContacto != null
+        )
+        if (vm.errorContacto != null)
+            Text(vm.errorContacto ?: "", color = MaterialTheme.colorScheme.error)
+
+        Spacer(Modifier.height(8.dp))
+
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            OutlinedTextField(
+                value = vm.fecha,
+                onValueChange = { vm.alCambiarFecha(it) },
+                label = { Text("Fecha (YYYY-MM-DD)") },
+                modifier = Modifier.weight(1f),
+                isError = vm.errorFecha != null
+            )
+            OutlinedTextField(
+                value = vm.hora,
+                onValueChange = { vm.alCambiarHora(it) },
+                label = { Text("Hora (HH:mm)") },
+                modifier = Modifier.weight(1f),
+                isError = vm.errorHora != null
+            )
+        }
+        if (vm.errorFecha != null)
+            Text(vm.errorFecha ?: "", color = MaterialTheme.colorScheme.error)
+        if (vm.errorHora != null)
+            Text(vm.errorHora ?: "", color = MaterialTheme.colorScheme.error)
+
+        Spacer(Modifier.height(8.dp))
+
+        Box {
+            OutlinedTextField(
+                value = vm.especialista,
+                onValueChange = { vm.alCambiarEspecialista(it) },
+                label = { Text("Especialista") },
+                modifier = Modifier.fillMaxWidth(),
+                readOnly = true,
+                trailingIcon = {
+                    IconButton(onClick = { menuEspecialista = true }) {
+                        Icon(Icons.Filled.Edit, contentDescription = null)
+                    }
+                },
+                isError = vm.errorEspecialista != null
+            )
+
+            DropdownMenu(
+                expanded = menuEspecialista,
+                onDismissRequest = { menuEspecialista = false }
+            ) {
+                especialistas.forEach { s ->
+                    DropdownMenuItem(
+                        text = { Text(s) },
+                        onClick = {
+                            vm.alCambiarEspecialista(s)
+                            menuEspecialista = false
+                        }
+                    )
+                }
+            }
+        }
+        if (vm.errorEspecialista != null)
+            Text(vm.errorEspecialista ?: "", color = MaterialTheme.colorScheme.error)
+
+        Spacer(Modifier.height(8.dp))
+
+        OutlinedTextField(
+            value = vm.notas,
+            onValueChange = { vm.alCambiarNotas(it) },
+            label = { Text("Notas (opcional)") },
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        Spacer(Modifier.height(12.dp))
+
+        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            Button(
+                onClick = {
+                    val sdfFecha = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+                    val sdfHora = SimpleDateFormat("HH:mm", Locale.getDefault())
+                    val ahora = Date()
+                    vm.alCambiarFecha(sdfFecha.format(ahora))
+                    vm.alCambiarHora(sdfHora.format(ahora))
+                },
+                enabled = !vm.estaCargando
+            ) {
+                Text("Hoy ahora")
+            }
+
+            Button(
+                onClick = {
+                    vm.crearReserva { exito, mensaje ->
+                        onShowSnackbar(mensaje ?: if (exito) "Reserva creada" else "Error")
+                    }
+                },
+                enabled = !vm.estaCargando
+            ) {
+                if (vm.estaCargando)
+                    CircularProgressIndicator(modifier = Modifier.size(18.dp))
+                Text("Reservar", modifier = Modifier.padding(start = 6.dp))
+            }
+        }
+
+        Spacer(Modifier.height(16.dp))
+
+        Text("Historial de reservas", style = MaterialTheme.typography.titleMedium)
+        Spacer(Modifier.height(8.dp))
+
+        if (vm.reservas.isEmpty()) {
+            Text("No hay reservas aún.")
+        } else {
+            Column {
+                vm.reservas.forEach { r ->
+                    Card(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 4.dp)
+                    ) {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(12.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Column(modifier = Modifier.weight(1f)) {
+                                Text(
+                                    "${r.nombreMascota} - ${r.nombrePropietario}",
+                                    style = MaterialTheme.typography.bodyLarge
+                                )
+                                Text(
+                                    "${r.fecha} ${r.hora} - ${r.especialista}",
+                                    style = MaterialTheme.typography.bodySmall
+                                )
+                                Text(
+                                    "Estado: ${r.estado}",
+                                    style = MaterialTheme.typography.bodySmall
+                                )
+                            }
+                            if (r.estado == EstadoReserva.AGENDADA) {
+                                TextButton(
+                                    onClick = {
+                                        vm.cancelarReserva(r.id) { exito, mensaje ->
+                                            onShowSnackbar(mensaje ?: if (exito) "Reserva cancelada" else "Error")
+                                        }
+                                    }
+                                ) { Text("Cancelar") }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        Spacer(Modifier.height(24.dp))
     }
 }
 
 @Preview(showBackground = true)
 @Composable
 fun VistaPreviaReservas() {
-    // La preview ahora no tendrá la barra superior, lo cual es esperado.
-    PantallaReservas(vm = VistaModeloReserva(), innerPadding = PaddingValues())
+    PantallaReservas(vm = VistaModeloReserva(), innerPadding = PaddingValues(), onShowSnackbar = {})
 }

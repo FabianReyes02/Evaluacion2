@@ -103,12 +103,14 @@ class VistaModeloReserva : ViewModel() {
     }
 
     private fun validarContacto(): Boolean {
-        val phoneRegex = Regex("^\\+?[0-9]{7,15}$")
-        return if (contacto.isBlank()) {
+        val numeroLimpio = contacto.replace(" ", "") // Ignorar espacios
+        // Regex para validar números de celular chilenos (9 dígitos, con o sin +56)
+        val phoneRegex = Regex("^(?:\\+?56)?9\\d{8}$")
+        return if (numeroLimpio.isBlank()) {
             errorContacto = "Contacto obligatorio"
             false
-        } else if (!phoneRegex.matches(contacto)) {
-            errorContacto = "Teléfono inválido (solo números, opcional +)"
+        } else if (!phoneRegex.matches(numeroLimpio)) {
+            errorContacto = "Formato de celular inválido (ej: 912345678)"
             false
         } else {
             errorContacto = null
