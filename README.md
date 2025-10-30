@@ -10,7 +10,6 @@ Consiste en una Aplicación móvil, la cual es un sistema para una veterinaria. 
 
 ## 🔧 Funcionalidades implementadas
 
-- Registro, edición y eliminación de mascotas 
 - Registro de dueños con sus datos personales
 - Registro y visualización de veterinarios
 - Creación y listado de citas veterinarias
@@ -33,12 +32,14 @@ Consiste en una Aplicación móvil, la cual es un sistema para una veterinaria. 
 ```bash
 git clone https://github.com/FabianReyes02/Evaluacion2.git
 ````
-2. Abrir proyecto en Android Studio
+2. Cambiar a la rama master
+   
+3. Abrir proyecto en Android Studio
 
-3. Esperar a que se sincronicen las dependencias
+4. Esperar a que se sincronicen las dependencias
    
-4. Conectar un dispositivo o iniciar un emulador
+5. Conectar un dispositivo o iniciar un emulador
    
-5. Ejecutar
+6. Ejecutar
 
 ## 🚧 Proyecto en desarrollo 🚧
