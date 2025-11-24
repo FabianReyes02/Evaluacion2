@@ -1,12 +1,31 @@
-package com.example.clinicaveterinariaapp
+package com.example.clinicaveterinariaapp.pantallas
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Person
-import androidx.compose.material3.*
+import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -15,6 +34,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.clinicaveterinariaapp.vista_modelo.VistaModeloUsuarios
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -31,7 +51,11 @@ fun PantallaRegistro(navController: NavController, vm: VistaModeloUsuarios) {
                     IconButton(onClick = { navController.popBackStack() }) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Volver")
                     }
-                }
+                },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.primaryContainer,
+                    titleContentColor = MaterialTheme.colorScheme.primary,
+                )
             )
         },
         snackbarHost = { SnackbarHost(snackbarHostState) }
@@ -50,13 +74,16 @@ fun PantallaRegistro(navController: NavController, vm: VistaModeloUsuarios) {
                 label = { Text("Nombre completo") },
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true,
-                leadingIcon = { Icon(Icons.Filled.Person, contentDescription = null) }
+                leadingIcon = { Icon(Icons.Filled.Person, contentDescription = null) },
+                isError = vm.errorNombre != null,
+                supportingText = {
+                    if (vm.errorNombre != null) {
+                        Text(vm.errorNombre ?: "", color = MaterialTheme.colorScheme.error)
+                    }
+                }
             )
-            if (vm.errorNombre != null) {
-                Text(vm.errorNombre ?: "", color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodySmall)
-            }
 
-            Spacer(modifier = Modifier.height(12.dp))
+            Spacer(modifier = Modifier.height(8.dp))
 
             OutlinedTextField(
                 value = vm.correo,
@@ -65,13 +92,16 @@ fun PantallaRegistro(navController: NavController, vm: VistaModeloUsuarios) {
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true,
                 isError = vm.errorCorreo != null,
-                leadingIcon = { Icon(Icons.Filled.Email, contentDescription = null) }
+                leadingIcon = { Icon(Icons.Filled.Email, contentDescription = null) },
+                supportingText = {
+                    if (vm.errorCorreo != null) {
+                        Text(vm.errorCorreo ?: "", color = MaterialTheme.colorScheme.error)
+                    }
+                }
             )
-            if (vm.errorCorreo != null) {
-                Text(vm.errorCorreo ?: "", color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodySmall)
-            }
 
-            Spacer(modifier = Modifier.height(12.dp))
+            Spacer(modifier = Modifier.height(8.dp))
+
             OutlinedTextField(
                 value = vm.contrasena,
                 onValueChange = { vm.alCambiarContrasena(it) },
@@ -80,11 +110,13 @@ fun PantallaRegistro(navController: NavController, vm: VistaModeloUsuarios) {
                 singleLine = true,
                 isError = vm.errorContrasena != null,
                 visualTransformation = PasswordVisualTransformation(),
-                leadingIcon = { Icon(Icons.Filled.Lock, contentDescription = null) }
+                leadingIcon = { Icon(Icons.Filled.Lock, contentDescription = null) },
+                supportingText = {
+                    if (vm.errorContrasena != null) {
+                        Text(vm.errorContrasena ?: "", color = MaterialTheme.colorScheme.error)
+                    }
+                }
             )
-            if (vm.errorContrasena != null) {
-                Text(vm.errorContrasena ?: "", color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodySmall)
-            }
 
             Spacer(modifier = Modifier.height(24.dp))
 
@@ -103,9 +135,14 @@ fun PantallaRegistro(navController: NavController, vm: VistaModeloUsuarios) {
                 enabled = !vm.estaCargando
             ) {
                 if (vm.estaCargando) {
-                    CircularProgressIndicator(modifier = Modifier.size(18.dp).padding(end = 8.dp))
+                    CircularProgressIndicator(
+                        modifier = Modifier.size(24.dp),
+                        color = MaterialTheme.colorScheme.onPrimary,
+                        strokeWidth = 2.dp
+                    )
+                } else {
+                    Text("Registrarme")
                 }
-                Text("Registrarme")
             }
         }
     }

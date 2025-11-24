@@ -1,9 +1,7 @@
-package com.example.clinicaveterinariaapp
+package com.example.clinicaveterinariaapp.datos
 
-/** Modelo simple de usuario para autenticación */
 data class Usuario(
     val correo: String,
     val contrasena: String,
     val nombre: String? = null
 )
-
