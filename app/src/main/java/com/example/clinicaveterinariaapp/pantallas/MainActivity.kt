@@ -28,6 +28,12 @@ import com.example.clinicaveterinariaapp.vista_modelo.VistaModeloReserva
 import com.example.clinicaveterinariaapp.vista_modelo.VistaModeloUsuarios
 import kotlinx.coroutines.launch
 
+// Importaciones añadidas para que funcione
+import com.example.clinicaveterinariaapp.pantallas.PantallaInicioSesion
+import com.example.clinicaveterinariaapp.pantallas.PantallaMenu
+import com.example.clinicaveterinariaapp.pantallas.PantallaRegistro
+import com.example.clinicaveterinariaapp.pantallas.PantallaReservas
+
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,7 +44,7 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
-//
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppNavigation() {

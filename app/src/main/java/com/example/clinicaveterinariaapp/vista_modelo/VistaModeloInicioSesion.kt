@@ -6,8 +6,8 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.clinicaveterinariaapp.datos.RepositorioUsuarios
-import com.example.clinicaveterinariaapp.validacion.ResultadoValidacion
 import com.example.clinicaveterinariaapp.validacion.Validador
+import com.example.clinicaveterinariaapp.validacion.ResultadoValidacion
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
