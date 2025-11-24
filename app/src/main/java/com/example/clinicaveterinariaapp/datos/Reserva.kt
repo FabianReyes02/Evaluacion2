@@ -10,6 +10,7 @@ data class Reserva(
     val fecha: String, // YYYY-MM-DD
     val hora: String, // HH:mm
     val especialista: String,
+    val remedio: String? = null,
     val notas: String? = null,
     val estado: EstadoReserva = EstadoReserva.AGENDADA
 )

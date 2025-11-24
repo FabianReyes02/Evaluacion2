@@ -9,10 +9,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.CalendarMonth
-import androidx.compose.material.icons.filled.Groups
+import androidx.compose.material.icons.filled.CalendarToday
+import androidx.compose.material.icons.filled.Group
+import androidx.compose.material.icons.filled.LocalHospital
 import androidx.compose.material.icons.filled.Logout
-import androidx.compose.material.icons.filled.MedicalServices
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -55,7 +55,7 @@ fun PantallaMenu(
 
             Button(onClick = { navController.navigate("reservas") }, modifier = Modifier.fillMaxWidth()) {
                 Icon(
-                    imageVector = Icons.Default.CalendarMonth,
+                    imageVector = Icons.Default.CalendarToday,
                     contentDescription = null,
                     modifier = Modifier.size(ButtonDefaults.IconSize)
                 )
@@ -66,7 +66,7 @@ fun PantallaMenu(
 
             Button(onClick = { navController.navigate("usuarios") }, modifier = Modifier.fillMaxWidth()) {
                 Icon(
-                    imageVector = Icons.Default.Groups,
+                    imageVector = Icons.Default.Group,
                     contentDescription = null,
                     modifier = Modifier.size(ButtonDefaults.IconSize)
                 )
@@ -77,15 +77,20 @@ fun PantallaMenu(
 
             Button(onClick = { navController.navigate("profesionales") }, modifier = Modifier.fillMaxWidth()) {
                 Icon(
-                    imageVector = Icons.Default.MedicalServices,
+                    imageVector = Icons.Default.LocalHospital,
                     contentDescription = null,
                     modifier = Modifier.size(ButtonDefaults.IconSize)
                 )
                 Spacer(Modifier.size(ButtonDefaults.IconSpacing))
                 Text("Ver Profesionales")
             }
+            Spacer(modifier = Modifier.height(16.dp))
 
-            Spacer(modifier = Modifier.weight(1f)) // Empuja el botón de logout al fondo
+            Button(onClick = { navController.navigate("remedios") }, modifier = Modifier.fillMaxWidth()) {
+                Text("Remedios")
+            }
+
+            Spacer(modifier = Modifier.weight(1f))
 
             Button(
                 onClick = {

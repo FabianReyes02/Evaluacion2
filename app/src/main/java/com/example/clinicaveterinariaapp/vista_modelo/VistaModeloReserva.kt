@@ -29,6 +29,8 @@ class VistaModeloReserva : ViewModel() {
         private set
     var especialista by mutableStateOf("")
         private set
+    var remedio by mutableStateOf<String?>(null)
+        private set
     var notas by mutableStateOf("")
         private set
 
@@ -57,6 +59,7 @@ class VistaModeloReserva : ViewModel() {
     fun alCambiarFecha(valor: String) { fecha = valor; errorFecha = null }
     fun alCambiarHora(valor: String) { hora = valor; errorHora = null }
     fun alCambiarEspecialista(valor: String) { especialista = valor; errorEspecialista = null }
+    fun alCambiarRemedio(valor: String?) { remedio = valor }
     fun alCambiarNotas(valor: String) { notas = valor }
 
     private fun validarNombreMascota(): Boolean {
@@ -122,7 +125,7 @@ class VistaModeloReserva : ViewModel() {
         estaCargando = true
         viewModelScope.launch {
             delay(600)
-            val r = Reserva(UUID.randomUUID().toString(), nombreMascota, nombrePropietario, contacto, fecha, hora, especialista, notas.takeIf { it.isNotBlank() })
+            val r = Reserva(UUID.randomUUID().toString(), nombreMascota, nombrePropietario, contacto, fecha, hora, especialista, remedio, notas.takeIf { it.isNotBlank() })
             _reservas.add(0, r)
             estaCargando = false
             limpiarFormulario()
@@ -153,6 +156,7 @@ class VistaModeloReserva : ViewModel() {
         fecha = ""
         hora = ""
         especialista = ""
+        remedio = null
         notas = ""
         errorNombreMascota = null
         errorNombrePropietario = null

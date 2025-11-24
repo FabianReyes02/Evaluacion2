@@ -31,6 +31,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -39,8 +40,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.clinicaveterinariaapp.datos.EstadoReserva
 import com.example.clinicaveterinariaapp.datos.RepositorioProfesionales
+import com.example.clinicaveterinariaapp.vista_modelo.VistaModeloRemedios
 import com.example.clinicaveterinariaapp.vista_modelo.VistaModeloReserva
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -52,6 +55,12 @@ fun PantallaReservas(vm: VistaModeloReserva, innerPadding: PaddingValues, onShow
 
     val especialistas = RepositorioProfesionales.obtenerNombres()
     var menuEspecialista by remember { mutableStateOf(false) }
+
+    // Remedios ViewModel
+    val remediosVm: VistaModeloRemedios = viewModel()
+    var menuRemedios by remember { mutableStateOf(false) }
+    // cargar remedios una vez
+    LaunchedEffect(Unit) { remediosVm.cargarRemedios() }
 
     Column(
         modifier = Modifier
@@ -133,6 +142,24 @@ fun PantallaReservas(vm: VistaModeloReserva, innerPadding: PaddingValues, onShow
         }
         Spacer(Modifier.height(8.dp))
 
+        // Remedios dropdown
+        Box {
+            OutlinedTextField(
+                value = vm.remedio ?: "",
+                onValueChange = { /* no permite escribir */ },
+                label = { Text("Remedio (opcional)") },
+                modifier = Modifier.fillMaxWidth(),
+                readOnly = true,
+                trailingIcon = { IconButton(onClick = { menuRemedios = true }) { Icon(Icons.Filled.Edit, "Seleccionar remedio") } }
+            )
+            DropdownMenu(expanded = menuRemedios, onDismissRequest = { menuRemedios = false }) {
+                remediosVm.nombres().forEach { r ->
+                    DropdownMenuItem(text = { Text(r) }, onClick = { vm.alCambiarRemedio(r); menuRemedios = false })
+                }
+            }
+        }
+        Spacer(Modifier.height(8.dp))
+
         OutlinedTextField(
             value = vm.notas,
             onValueChange = { vm.alCambiarNotas(it) },
@@ -179,6 +206,7 @@ fun PantallaReservas(vm: VistaModeloReserva, innerPadding: PaddingValues, onShow
                                     EstadoReserva.CANCELADA -> MaterialTheme.colorScheme.error
                                     EstadoReserva.CUMPLIDA -> MaterialTheme.colorScheme.secondary
                                 })
+                                r.remedio?.let { Text("Remedio: $it", style = MaterialTheme.typography.bodySmall) }
                             }
                             if (r.estado == EstadoReserva.AGENDADA) {
                                 TextButton(onClick = { vm.cancelarReserva(r.id) { _, msg -> onShowSnackbar(msg ?: "Error") } }) { Text("Cancelar") }
