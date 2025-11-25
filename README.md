@@ -111,17 +111,4 @@ curl http://10.0.2.2:3000/posts
 | Fabián Reyes    | Backend/Frontend   |
 | Matías Vargas   | Backend/Frontend   |
 
-## 📌 Próximos pasos sugeridos
 
-- Añadir Dockerfile y docker-compose para el microservicio.
-- Añadir CI (GitHub Actions) para compilar la app y ejecutar tests automáticamente.
-- Persistencia para microservicio (Postgres/Mongo) y endpoints autenticados.
-
-Si quieres, puedo:
-- Crear el Dockerfile y docker-compose.
-- Añadir el workflow de GitHub Actions para build + tests.
-- Extender el microservicio con persistencia y endpoints de autenticación.
-
----
-
-Si quieres que ajuste el README para un entorno concreto (por ejemplo, apuntar a una URL pública) dímelo y lo adapto.
