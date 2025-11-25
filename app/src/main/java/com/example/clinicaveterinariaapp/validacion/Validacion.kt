@@ -18,11 +18,18 @@ object Validador {
     }
 
     fun validarCorreo(correo: String): ResultadoValidacion {
-        return when {
-            correo.isBlank() -> ResultadoValidacion.Error("El correo es obligatorio")
-            !Patterns.EMAIL_ADDRESS.matcher(correo).matches() -> ResultadoValidacion.Error("El formato del correo es inválido")
-            else -> ResultadoValidacion.Exito
-        }
+        if (correo.isBlank()) return ResultadoValidacion.Error("El correo es obligatorio")
+
+        val esValido = try {
+            // En Android normal usamos Patterns.EMAIL_ADDRESS; en tests JVM esto puede ser null
+            val pattern = Patterns.EMAIL_ADDRESS
+            pattern?.matcher(correo)?.matches()
+        } catch (t: Throwable) {
+            null
+        } ?: Regex("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$").matches(correo)
+
+        return if (!esValido) ResultadoValidacion.Error("El formato del correo es inválido")
+        else ResultadoValidacion.Exito
     }
 
     fun validarContrasena(contrasena: String): ResultadoValidacion {

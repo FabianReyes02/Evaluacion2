@@ -16,8 +16,9 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
-        // URL base para APIs; puedes cambiarla en gradle.properties o aquí
-        buildConfigField("String", "API_BASE_URL", "\"https://jsonplaceholder.typicode.com/\"")
+        // URL base para APIs; para desarrollo con emulador Android use "http://10.0.2.2:3000/"
+        // En producción reemplace por la URL real del servidor o configúrela por build flavors/CI.
+        buildConfigField("String", "API_BASE_URL", "\"http://10.0.2.2:3000/\"")
     }
 
     buildTypes {

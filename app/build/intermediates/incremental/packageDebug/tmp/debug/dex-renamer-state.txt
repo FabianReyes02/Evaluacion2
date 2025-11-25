@@ -1,22 +1,13 @@
-<<<<<<< HEAD
-#Tue Oct 28 17:59:37 CLST 2025
-base.0=C\:\\Users\\ibane\\StudioProjects\\Evaluacion2\\app\\build\\intermediates\\dex\\debug\\mergeExtDexDebug\\classes.dex
-base.1=C\:\\Users\\ibane\\StudioProjects\\Evaluacion2\\app\\build\\intermediates\\dex\\debug\\mergeProjectDexDebug\\0\\classes.dex
-base.2=C\:\\Users\\ibane\\StudioProjects\\Evaluacion2\\app\\build\\intermediates\\dex\\debug\\mergeProjectDexDebug\\11\\classes.dex
-base.3=C\:\\Users\\ibane\\StudioProjects\\Evaluacion2\\app\\build\\intermediates\\dex\\debug\\mergeProjectDexDebug\\2\\classes.dex
-base.4=C\:\\Users\\ibane\\StudioProjects\\Evaluacion2\\app\\build\\intermediates\\dex\\debug\\mergeExtDexDebug\\classes2.dex
-=======
-#Mon Nov 24 18:32:11 CLST 2025
-base.0=D\:\\Codigos\\aaaaapps\\app\\build\\intermediates\\dex\\debug\\mergeExtDexDebug\\classes.dex
-base.1=D\:\\Codigos\\aaaaapps\\app\\build\\intermediates\\dex\\debug\\mergeProjectDexDebug\\0\\classes.dex
-base.2=D\:\\Codigos\\aaaaapps\\app\\build\\intermediates\\dex\\debug\\mergeProjectDexDebug\\10\\classes.dex
-base.3=D\:\\Codigos\\aaaaapps\\app\\build\\intermediates\\dex\\debug\\mergeProjectDexDebug\\11\\classes.dex
-base.4=D\:\\Codigos\\aaaaapps\\app\\build\\intermediates\\dex\\debug\\mergeProjectDexDebug\\12\\classes.dex
-base.5=D\:\\Codigos\\aaaaapps\\app\\build\\intermediates\\dex\\debug\\mergeProjectDexDebug\\2\\classes.dex
-base.6=D\:\\Codigos\\aaaaapps\\app\\build\\intermediates\\dex\\debug\\mergeProjectDexDebug\\3\\classes.dex
-base.7=D\:\\Codigos\\aaaaapps\\app\\build\\intermediates\\dex\\debug\\mergeProjectDexDebug\\8\\classes.dex
-base.8=D\:\\Codigos\\aaaaapps\\app\\build\\intermediates\\dex\\debug\\mergeExtDexDebug\\classes2.dex
->>>>>>> fc9e7a9cdf852425a3d52b6ae103506833b3b079
+#Tue Nov 25 01:52:30 CLST 2025
+base.0=D\:\\codigos\\Evaluacion2\\app\\build\\intermediates\\dex\\debug\\mergeExtDexDebug\\classes.dex
+base.1=D\:\\codigos\\Evaluacion2\\app\\build\\intermediates\\dex\\debug\\mergeProjectDexDebug\\0\\classes.dex
+base.2=D\:\\codigos\\Evaluacion2\\app\\build\\intermediates\\dex\\debug\\mergeProjectDexDebug\\10\\classes.dex
+base.3=D\:\\codigos\\Evaluacion2\\app\\build\\intermediates\\dex\\debug\\mergeProjectDexDebug\\11\\classes.dex
+base.4=D\:\\codigos\\Evaluacion2\\app\\build\\intermediates\\dex\\debug\\mergeProjectDexDebug\\12\\classes.dex
+base.5=D\:\\codigos\\Evaluacion2\\app\\build\\intermediates\\dex\\debug\\mergeProjectDexDebug\\2\\classes.dex
+base.6=D\:\\codigos\\Evaluacion2\\app\\build\\intermediates\\dex\\debug\\mergeProjectDexDebug\\3\\classes.dex
+base.7=D\:\\codigos\\Evaluacion2\\app\\build\\intermediates\\dex\\debug\\mergeProjectDexDebug\\8\\classes.dex
+base.8=D\:\\codigos\\Evaluacion2\\app\\build\\intermediates\\dex\\debug\\mergeExtDexDebug\\classes2.dex
 path.0=classes.dex
 path.1=0/classes.dex
 path.2=10/classes.dex

@@ -4,11 +4,7 @@
             "outputFile": "com.example.clinicaveterinariaapp-mergeDebugResources-49:/values-v21/values-v21.xml",
             "map": [
                 {
-<<<<<<< HEAD
-                    "source": "C:\\Users\\ibane\\.gradle\\caches\\8.13\\transforms\\194d74923ccf9b34f2d7cfabbdc32673\\transformed\\core-1.17.0\\res\\values-v21\\values-v21.xml",
-=======
-                    "source": "C:\\Users\\fabyd\\.gradle\\caches\\8.13\\transforms\\6927b0b3d85dbfc474ab5750382e17bf\\transformed\\core-1.12.0\\res\\values-v21\\values-v21.xml",
->>>>>>> fc9e7a9cdf852425a3d52b6ae103506833b3b079
+                    "source": "C:\\Users\\lizz\\.gradle\\caches\\8.13\\transforms\\6927b0b3d85dbfc474ab5750382e17bf\\transformed\\core-1.12.0\\res\\values-v21\\values-v21.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9,10,13",
                         "startColumns": "4,4,4,4,4,4,4,4,4,4",

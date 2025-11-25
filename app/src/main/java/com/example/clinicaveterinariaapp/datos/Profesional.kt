@@ -1,6 +1,7 @@
 package com.example.clinicaveterinariaapp.datos
 
 /** Modelo para profesionales/especialistas */
+//
 data class Profesional(
     val id: String,
     val nombre: String,
