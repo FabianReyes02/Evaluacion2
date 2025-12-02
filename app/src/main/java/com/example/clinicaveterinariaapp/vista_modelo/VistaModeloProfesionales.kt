@@ -41,13 +41,9 @@ class VistaModeloProfesionales : ViewModel() {
     private val _lista = mutableStateListOf<Profesional>()
     val lista: List<Profesional> get() = _lista
 
-    // Cliente API opcional (configurable vía RetrofitClient.baseUrl)
+    // Cliente API
     private val apiService: ProfesionalApiService = RetrofitClient.instance.create(ProfesionalApiService::class.java)
     private val apiRepo = ProfesionalApiRepository(apiService)
-
-    init {
-        _lista.addAll(RepositorioProfesionales.obtenerTodos())
-    }
 
     fun alCambiarNombre(v: String) { nombre = v; if (errorNombre != null) validarNombre() }
     fun alCambiarEspecialidad(v: String) { especialidad = v; if (errorEspecialidad != null) validarEspecialidad() }
@@ -63,68 +59,6 @@ class VistaModeloProfesionales : ViewModel() {
     }
 
     fun validarTodo(): Boolean { val a = validarNombre(); val b = validarEspecialidad(); return a && b }
-
-    fun crearProfesional(onResultado: (Boolean, String?) -> Unit) {
-        if (!validarTodo()) { onResultado(false, "Corrige los errores"); return }
-        estaCargando = true
-        viewModelScope.launch {
-            delay(400)
-            val p = Profesional(
-                id = UUID.randomUUID().toString(),
-                nombre = nombre.trim(),
-                especialidad = especialidad.trim(),
-                contacto = if (contacto.isBlank()) null else contacto.trim(),
-                descripcion = if (descripcion.isBlank()) null else descripcion.trim()
-            )
-            RepositorioProfesionales.agregar(p)
-            _lista.add(0, p)
-            estaCargando = false
-            limpiarFormulario()
-            onResultado(true, null)
-        }
-    }
-
-    fun actualizarProfesional(id: String, onResultado: (Boolean, String?) -> Unit) {
-        if (!validarTodo()) { onResultado(false, "Corrige los errores"); return }
-        estaCargando = true
-        viewModelScope.launch {
-            delay(300)
-            val actualizado = Profesional(
-                id = id,
-                nombre = nombre.trim(),
-                especialidad = especialidad.trim(),
-                contacto = if (contacto.isBlank()) null else contacto.trim(),
-                descripcion = if (descripcion.isBlank()) null else descripcion.trim()
-            )
-            val ok = RepositorioProfesionales.actualizar(id, actualizado)
-            if (ok) {
-                val idx = _lista.indexOfFirst { it.id == id }
-                if (idx != -1) _lista[idx] = actualizado
-                estaCargando = false
-                limpiarFormulario()
-                onResultado(true, null)
-            } else {
-                estaCargando = false
-                onResultado(false, "Profesional no encontrado")
-            }
-        }
-    }
-
-    fun eliminarProfesional(id: String, onResultado: (Boolean, String?) -> Unit) {
-        estaCargando = true
-        viewModelScope.launch {
-            delay(200)
-            val ok = RepositorioProfesionales.eliminar(id)
-            if (ok) {
-                _lista.removeIf { it.id == id }
-                estaCargando = false
-                onResultado(true, null)
-            } else {
-                estaCargando = false
-                onResultado(false, "No se pudo eliminar")
-            }
-        }
-    }
 
     fun cargarParaEdicion(profesional: Profesional) {
         nombre = profesional.nombre

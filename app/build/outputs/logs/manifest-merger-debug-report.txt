@@ -1,9 +1,10 @@
 -- Merging decision tree log ---
 manifest
 ADDED from C:\Users\ibane\Desktop\Evaluacion2\app\src\main\AndroidManifest.xml:2:1-28:12
-INJECTED from C:\Users\ibane\Desktop\Evaluacion2\app\src\main\AndroidManifest.xml:2:1-28:12
-INJECTED from C:\Users\ibane\Desktop\Evaluacion2\app\src\main\AndroidManifest.xml:2:1-28:12
-INJECTED from C:\Users\ibane\Desktop\Evaluacion2\app\src\main\AndroidManifest.xml:2:1-28:12
+MERGED from C:\Users\ibane\Desktop\Evaluacion2\app\src\main\AndroidManifest.xml:2:1-28:12
+INJECTED from C:\Users\ibane\Desktop\Evaluacion2\app\src\debug\AndroidManifest.xml:2:1-4:12
+INJECTED from C:\Users\ibane\Desktop\Evaluacion2\app\src\debug\AndroidManifest.xml:2:1-4:12
+INJECTED from C:\Users\ibane\Desktop\Evaluacion2\app\src\debug\AndroidManifest.xml:2:1-4:12
 MERGED from [androidx.navigation:navigation-common:2.7.7] C:\Users\ibane\.gradle\caches\8.13\transforms\6eb4ecbd264d75a5586677f768507272\transformed\navigation-common-2.7.7\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.navigation:navigation-runtime:2.7.7] C:\Users\ibane\.gradle\caches\8.13\transforms\5d5ec7150e0ff13f94f06fe74e4b3103\transformed\navigation-runtime-2.7.7\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.navigation:navigation-common-ktx:2.7.7] C:\Users\ibane\.gradle\caches\8.13\transforms\d71043369b8d859e98cc648bb364ac83\transformed\navigation-common-ktx-2.7.7\AndroidManifest.xml:2:1-7:12
@@ -56,11 +57,11 @@ MERGED from [androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\ibane\.g
 MERGED from [androidx.startup:startup-runtime:1.1.1] C:\Users\ibane\.gradle\caches\8.13\transforms\3dfba6996eea1c45895bb50daf70d18a\transformed\startup-runtime-1.1.1\AndroidManifest.xml:17:1-33:12
 MERGED from [androidx.tracing:tracing:1.0.0] C:\Users\ibane\.gradle\caches\8.13\transforms\61d1a25769801b86d58e29d4655cbaed\transformed\tracing-1.0.0\AndroidManifest.xml:17:1-24:12
 	package
-		INJECTED from C:\Users\ibane\Desktop\Evaluacion2\app\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\ibane\Desktop\Evaluacion2\app\src\debug\AndroidManifest.xml
 	android:versionName
-		INJECTED from C:\Users\ibane\Desktop\Evaluacion2\app\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\ibane\Desktop\Evaluacion2\app\src\debug\AndroidManifest.xml
 	android:versionCode
-		INJECTED from C:\Users\ibane\Desktop\Evaluacion2\app\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\ibane\Desktop\Evaluacion2\app\src\debug\AndroidManifest.xml
 	xmlns:android
 		ADDED from C:\Users\ibane\Desktop\Evaluacion2\app\src\main\AndroidManifest.xml:2:11-69
 uses-permission#android.permission.INTERNET
@@ -69,7 +70,9 @@ ADDED from C:\Users\ibane\Desktop\Evaluacion2\app\src\main\AndroidManifest.xml:4
 		ADDED from C:\Users\ibane\Desktop\Evaluacion2\app\src\main\AndroidManifest.xml:4:22-64
 application
 ADDED from C:\Users\ibane\Desktop\Evaluacion2\app\src\main\AndroidManifest.xml:6:5-26:19
-INJECTED from C:\Users\ibane\Desktop\Evaluacion2\app\src\main\AndroidManifest.xml:6:5-26:19
+MERGED from C:\Users\ibane\Desktop\Evaluacion2\app\src\main\AndroidManifest.xml:6:5-26:19
+MERGED from C:\Users\ibane\Desktop\Evaluacion2\app\src\main\AndroidManifest.xml:6:5-26:19
+INJECTED from C:\Users\ibane\Desktop\Evaluacion2\app\src\debug\AndroidManifest.xml:3:5-56
 MERGED from [androidx.emoji2:emoji2:1.3.0] C:\Users\ibane\.gradle\caches\8.13\transforms\e6902b18bc516771319f029bd71a96c9\transformed\emoji2-1.3.0\AndroidManifest.xml:23:5-33:19
 MERGED from [androidx.emoji2:emoji2:1.3.0] C:\Users\ibane\.gradle\caches\8.13\transforms\e6902b18bc516771319f029bd71a96c9\transformed\emoji2-1.3.0\AndroidManifest.xml:23:5-33:19
 MERGED from [androidx.lifecycle:lifecycle-process:2.7.0] C:\Users\ibane\.gradle\caches\8.13\transforms\e5fd255104b88cce660cef0005219313\transformed\lifecycle-process-2.7.0\AndroidManifest.xml:23:5-33:19
@@ -87,25 +90,35 @@ MERGED from [androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\ibane\.g
 MERGED from [androidx.startup:startup-runtime:1.1.1] C:\Users\ibane\.gradle\caches\8.13\transforms\3dfba6996eea1c45895bb50daf70d18a\transformed\startup-runtime-1.1.1\AndroidManifest.xml:25:5-31:19
 MERGED from [androidx.startup:startup-runtime:1.1.1] C:\Users\ibane\.gradle\caches\8.13\transforms\3dfba6996eea1c45895bb50daf70d18a\transformed\startup-runtime-1.1.1\AndroidManifest.xml:25:5-31:19
 	android:extractNativeLibs
-		INJECTED from C:\Users\ibane\Desktop\Evaluacion2\app\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\ibane\Desktop\Evaluacion2\app\src\debug\AndroidManifest.xml
 	android:appComponentFactory
 		ADDED from [androidx.core:core:1.12.0] C:\Users\ibane\.gradle\caches\8.13\transforms\6927b0b3d85dbfc474ab5750382e17bf\transformed\core-1.12.0\AndroidManifest.xml:28:18-86
 	android:supportsRtl
 		ADDED from C:\Users\ibane\Desktop\Evaluacion2\app\src\main\AndroidManifest.xml:13:9-35
+		ADDED from C:\Users\ibane\Desktop\Evaluacion2\app\src\main\AndroidManifest.xml:13:9-35
 	android:label
+		ADDED from C:\Users\ibane\Desktop\Evaluacion2\app\src\main\AndroidManifest.xml:11:9-41
 		ADDED from C:\Users\ibane\Desktop\Evaluacion2\app\src\main\AndroidManifest.xml:11:9-41
 	android:fullBackupContent
 		ADDED from C:\Users\ibane\Desktop\Evaluacion2\app\src\main\AndroidManifest.xml:9:9-54
+		ADDED from C:\Users\ibane\Desktop\Evaluacion2\app\src\main\AndroidManifest.xml:9:9-54
 	android:roundIcon
+		ADDED from C:\Users\ibane\Desktop\Evaluacion2\app\src\main\AndroidManifest.xml:12:9-54
 		ADDED from C:\Users\ibane\Desktop\Evaluacion2\app\src\main\AndroidManifest.xml:12:9-54
 	android:icon
 		ADDED from C:\Users\ibane\Desktop\Evaluacion2\app\src\main\AndroidManifest.xml:10:9-43
+		ADDED from C:\Users\ibane\Desktop\Evaluacion2\app\src\main\AndroidManifest.xml:10:9-43
 	android:allowBackup
+		ADDED from C:\Users\ibane\Desktop\Evaluacion2\app\src\main\AndroidManifest.xml:7:9-35
 		ADDED from C:\Users\ibane\Desktop\Evaluacion2\app\src\main\AndroidManifest.xml:7:9-35
 	android:theme
 		ADDED from C:\Users\ibane\Desktop\Evaluacion2\app\src\main\AndroidManifest.xml:14:9-59
+		ADDED from C:\Users\ibane\Desktop\Evaluacion2\app\src\main\AndroidManifest.xml:14:9-59
 	android:dataExtractionRules
 		ADDED from C:\Users\ibane\Desktop\Evaluacion2\app\src\main\AndroidManifest.xml:8:9-65
+		ADDED from C:\Users\ibane\Desktop\Evaluacion2\app\src\main\AndroidManifest.xml:8:9-65
+	android:usesCleartextTraffic
+		ADDED from C:\Users\ibane\Desktop\Evaluacion2\app\src\debug\AndroidManifest.xml:3:18-53
 activity#com.example.clinicaveterinariaapp.pantallas.MainActivity
 ADDED from C:\Users\ibane\Desktop\Evaluacion2\app\src\main\AndroidManifest.xml:15:9-25:20
 	android:label
@@ -127,9 +140,9 @@ ADDED from C:\Users\ibane\Desktop\Evaluacion2\app\src\main\AndroidManifest.xml:2
 	android:name
 		ADDED from C:\Users\ibane\Desktop\Evaluacion2\app\src\main\AndroidManifest.xml:23:27-74
 uses-sdk
-INJECTED from C:\Users\ibane\Desktop\Evaluacion2\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
-INJECTED from C:\Users\ibane\Desktop\Evaluacion2\app\src\main\AndroidManifest.xml
-INJECTED from C:\Users\ibane\Desktop\Evaluacion2\app\src\main\AndroidManifest.xml
+INJECTED from C:\Users\ibane\Desktop\Evaluacion2\app\src\debug\AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from C:\Users\ibane\Desktop\Evaluacion2\app\src\debug\AndroidManifest.xml
+INJECTED from C:\Users\ibane\Desktop\Evaluacion2\app\src\debug\AndroidManifest.xml
 MERGED from [androidx.navigation:navigation-common:2.7.7] C:\Users\ibane\.gradle\caches\8.13\transforms\6eb4ecbd264d75a5586677f768507272\transformed\navigation-common-2.7.7\AndroidManifest.xml:20:5-44
 MERGED from [androidx.navigation:navigation-common:2.7.7] C:\Users\ibane\.gradle\caches\8.13\transforms\6eb4ecbd264d75a5586677f768507272\transformed\navigation-common-2.7.7\AndroidManifest.xml:20:5-44
 MERGED from [androidx.navigation:navigation-runtime:2.7.7] C:\Users\ibane\.gradle\caches\8.13\transforms\5d5ec7150e0ff13f94f06fe74e4b3103\transformed\navigation-runtime-2.7.7\AndroidManifest.xml:20:5-44
@@ -233,9 +246,9 @@ MERGED from [androidx.startup:startup-runtime:1.1.1] C:\Users\ibane\.gradle\cach
 MERGED from [androidx.tracing:tracing:1.0.0] C:\Users\ibane\.gradle\caches\8.13\transforms\61d1a25769801b86d58e29d4655cbaed\transformed\tracing-1.0.0\AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.tracing:tracing:1.0.0] C:\Users\ibane\.gradle\caches\8.13\transforms\61d1a25769801b86d58e29d4655cbaed\transformed\tracing-1.0.0\AndroidManifest.xml:20:5-22:41
 	android:targetSdkVersion
-		INJECTED from C:\Users\ibane\Desktop\Evaluacion2\app\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\ibane\Desktop\Evaluacion2\app\src\debug\AndroidManifest.xml
 	android:minSdkVersion
-		INJECTED from C:\Users\ibane\Desktop\Evaluacion2\app\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\ibane\Desktop\Evaluacion2\app\src\debug\AndroidManifest.xml
 provider#androidx.startup.InitializationProvider
 ADDED from [androidx.emoji2:emoji2:1.3.0] C:\Users\ibane\.gradle\caches\8.13\transforms\e6902b18bc516771319f029bd71a96c9\transformed\emoji2-1.3.0\AndroidManifest.xml:24:9-32:20
 MERGED from [androidx.lifecycle:lifecycle-process:2.7.0] C:\Users\ibane\.gradle\caches\8.13\transforms\e5fd255104b88cce660cef0005219313\transformed\lifecycle-process-2.7.0\AndroidManifest.xml:24:9-32:20

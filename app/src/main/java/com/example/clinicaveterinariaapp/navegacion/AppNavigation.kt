@@ -135,7 +135,24 @@ fun AppNavigation() {
 
         // Remedios
         composable("remedios") {
-            PantallaRemedios()
+            Scaffold(
+                topBar = {
+                    TopAppBar(
+                        title = { Text("Remedios") },
+                        navigationIcon = {
+                            IconButton(onClick = { navController.popBackStack() }) {
+                                Icon(Icons.AutoMirrored.Filled.ArrowBack, "Volver")
+                            }
+                        },
+                        colors = TopAppBarDefaults.topAppBarColors(
+                            containerColor = MaterialTheme.colorScheme.primaryContainer,
+                            titleContentColor = MaterialTheme.colorScheme.primary,
+                        )
+                    )
+                }
+            ) { innerPadding ->
+                PantallaRemedios(innerPadding)
+            }
         }
     }
 }

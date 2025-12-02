@@ -101,23 +101,15 @@ fun PantallaProfesionales(vm: VistaModeloProfesionales, innerPadding: PaddingVal
                     )
 
                     Spacer(modifier = Modifier.height(12.dp))
-                    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                        Button(onClick = {
-                            vm.crearProfesional { exito, msg ->
-                                scope.launch {
-                                    snackbarHostState.showSnackbar(
-                                        msg ?: if (exito) "Profesional creado/actualizado" else "Error"
-                                    )
-                                }
-                            }
-                        }, enabled = !vm.estaCargando) { Text("Guardar") }
-
-                        Button(onClick = {
+                    Button(
+                        onClick = {
                             vm.crearProfesionalRemoto { exito, msg ->
-                                scope.launch { snackbarHostState.showSnackbar(msg ?: if (exito) "Creado en API" else "Error API") }
+                                scope.launch { snackbarHostState.showSnackbar(msg ?: if (exito) "Profesional creado" else "Error") }
                             }
-                        }, enabled = !vm.estaCargando) { Text("Guardar (API)") }
-                    }
+                        },
+                        enabled = !vm.estaCargando,
+                        modifier = Modifier.fillMaxWidth()
+                    ) { Text("Crear Profesional") }
                 }
             }
         }
@@ -164,26 +156,17 @@ fun PantallaProfesionales(vm: VistaModeloProfesionales, innerPadding: PaddingVal
                                 text = p.especialidad,
                                 style = MaterialTheme.typography.bodySmall
                             )
+                            p.contacto?.let { Text(text = "Contacto: $it", style = MaterialTheme.typography.bodySmall) }
                         }
                         Column(horizontalAlignment = Alignment.End) {
                             TextButton(onClick = { vm.cargarParaEdicion(p) }) { Text("Editar") }
                             TextButton(onClick = {
-                                vm.eliminarProfesional(p.id) { exito, msg ->
+                                vm.eliminarProfesionalRemoto(p.id) { exito, msg ->
                                     scope.launch {
-                                        snackbarHostState.showSnackbar(
-                                            msg ?: if (exito) "Eliminado" else "Error"
-                                        )
+                                        snackbarHostState.showSnackbar(msg ?: if (exito) "Eliminado" else "Error")
                                     }
                                 }
                             }) { Text("Eliminar") }
-
-                            TextButton(onClick = {
-                                vm.eliminarProfesionalRemoto(p.id) { exito, msg ->
-                                    scope.launch {
-                                        snackbarHostState.showSnackbar(msg ?: if (exito) "Eliminado (API)" else "Error API")
-                                    }
-                                }
-                            }) { Text("Eliminar (API)") }
                         }
                     }
                 }

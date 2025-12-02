@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PantallaRemedios() {
+fun PantallaRemedios(innerPadding: PaddingValues) {
     val vm: VistaModeloRemedios = viewModel()
     val loading by vm.estaCargando
     val error by vm.errorMsg
@@ -26,7 +26,12 @@ fun PantallaRemedios() {
     var dosis by remember { mutableStateOf("") }
     var presentacion by remember { mutableStateOf("") }
 
-    Scaffold(topBar = { TopAppBar(title = { Text("Remedios") }) }, snackbarHost = { SnackbarHost(snackbarHostState) }) { innerPadding ->
+    Column(modifier = Modifier
+        .fillMaxSize()
+        .padding(innerPadding)
+        .padding(16.dp)
+    ) {
+        LaunchedEffect(Unit) { vm.cargarRemedios() }
         Column(modifier = Modifier
             .fillMaxSize()
             .padding(innerPadding)
@@ -83,5 +88,7 @@ fun PantallaRemedios() {
                 }
             }
         }
+
+        SnackbarHost(hostState = snackbarHostState)
     }
 }
