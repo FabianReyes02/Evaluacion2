@@ -16,18 +16,18 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
-        // URL base por defecto (emulador local)
-        buildConfigField("String", "API_BASE_URL", "\"http://10.0.2.2:8080/\"")
+        // URL base por defecto (Render)
+        buildConfigField("String", "API_BASE_URL", "\"https://backend-veterinaria-q8lt.onrender.com/\"")
     }
 
     buildTypes {
         debug {
-            // Desarrollo: emulador apuntando a localhost
-            buildConfigField("String", "API_BASE_URL", "\"http://10.0.2.2:8080/\"")
+            // Desarrollo: backend en Render
+            buildConfigField("String", "API_BASE_URL", "\"https://backend-veterinaria-q8lt.onrender.com/\"")
         }
         release {
-            // Producción: servidor en Render (cambiar después del deploy)
-            buildConfigField("String", "API_BASE_URL", "\"https://TU_URL_DE_RENDER.onrender.com/\"")
+            // Producción: backend en Render
+            buildConfigField("String", "API_BASE_URL", "\"https://backend-veterinaria-q8lt.onrender.com/\"")
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),

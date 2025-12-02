@@ -145,7 +145,6 @@ class VistaModeloProfesionales : ViewModel() {
                             contacto = creado.contacto,
                             descripcion = creado.descripcion
                         )
-                        RepositorioProfesionales.agregar(p)
                         _lista.add(0, p)
                         limpiarFormulario()
                         onResultado(true, null)
@@ -174,7 +173,6 @@ class VistaModeloProfesionales : ViewModel() {
                 val resp = apiRepo.eliminar(id)
                 if (resp.isSuccessful) {
                     // borrar localmente
-                    RepositorioProfesionales.eliminar(id)
                     _lista.removeIf { it.id == id }
                     onResultado(true, null)
                 } else {

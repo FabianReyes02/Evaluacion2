@@ -19,10 +19,14 @@ fun PantallaProfesionales(vm: VistaModeloProfesionales, innerPadding: PaddingVal
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
 
-    // Cargar automáticamente desde la API al abrir la pantalla (una sola vez)
+    // Cargar automáticamente desde la API al abrir la pantalla
     LaunchedEffect(Unit) {
-        if (vm.lista.isEmpty()) {
-            vm.cargarDesdeApi { _, _ -> }
+        vm.cargarDesdeApi { exito, msg ->
+            if (!exito && msg != null) {
+                scope.launch {
+                    snackbarHostState.showSnackbar("Error al cargar: $msg")
+                }
+            }
         }
     }
 
