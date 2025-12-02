@@ -19,6 +19,13 @@ fun PantallaProfesionales(vm: VistaModeloProfesionales, innerPadding: PaddingVal
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
 
+    // Cargar automáticamente desde la API al abrir la pantalla (una sola vez)
+    LaunchedEffect(Unit) {
+        if (vm.lista.isEmpty()) {
+            vm.cargarDesdeApi { _, _ -> }
+        }
+    }
+
     // Usar el mismo patrón visual que otras pantallas: LazyColumn con contentPadding = innerPadding
     LazyColumn(
         contentPadding = innerPadding,
