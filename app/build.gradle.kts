@@ -16,13 +16,18 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
-        // URL base para APIs; para desarrollo con emulador Android use "http://10.0.2.2:3000/"
-        // En producción reemplace por la URL real del servidor o configúrela por build flavors/CI.
-        buildConfigField("String", "API_BASE_URL", "\"http://10.0.2.2:3000/\"")
+        // URL base por defecto (emulador local)
+        buildConfigField("String", "API_BASE_URL", "\"http://10.0.2.2:8080/\"")
     }
 
     buildTypes {
+        debug {
+            // Desarrollo: emulador apuntando a localhost
+            buildConfigField("String", "API_BASE_URL", "\"http://10.0.2.2:8080/\"")
+        }
         release {
+            // Producción: servidor en Render (cambiar después del deploy)
+            buildConfigField("String", "API_BASE_URL", "\"https://TU_URL_DE_RENDER.onrender.com/\"")
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
