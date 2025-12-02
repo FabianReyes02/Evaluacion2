@@ -49,48 +49,54 @@ fun PantallaMenu(
                 .fillMaxSize()
                 .padding(innerPadding)
                 .padding(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            Column(
+                modifier = Modifier.weight(1f),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Button(onClick = { navController.navigate("reservas") },
+                    modifier = Modifier.size(330.dp,53.dp)) {
+                    Icon(
+                        imageVector = Icons.Default.CalendarToday,
+                        contentDescription = null,
+                        modifier = Modifier.size(ButtonDefaults.IconSize)
+                    )
+                    Spacer(Modifier.size(ButtonDefaults.IconSpacing))
+                    Text("Agendar / Ver Citas")
+                }
+                Spacer(modifier = Modifier.height(28.dp))
 
-            Button(onClick = { navController.navigate("reservas") }, modifier = Modifier.fillMaxWidth()) {
-                Icon(
-                    imageVector = Icons.Default.CalendarToday,
-                    contentDescription = null,
-                    modifier = Modifier.size(ButtonDefaults.IconSize)
-                )
-                Spacer(Modifier.size(ButtonDefaults.IconSpacing))
-                Text("Agendar / Ver Citas")
+                Button(onClick = { navController.navigate("usuarios") },
+                    modifier = Modifier.size(330.dp,53.dp)) {
+                    Icon(
+                        imageVector = Icons.Default.Group,
+                        contentDescription = null,
+                        modifier = Modifier.size(ButtonDefaults.IconSize)
+                    )
+                    Spacer(Modifier.size(ButtonDefaults.IconSpacing))
+                    Text("Ver Usuarios")
+                }
+                Spacer(modifier = Modifier.height(28.dp))
+
+                Button(onClick = { navController.navigate("profesionales") },
+                    modifier = Modifier.size(330.dp,53.dp)) {
+                    Icon(
+                        imageVector = Icons.Default.LocalHospital,
+                        contentDescription = null,
+                        modifier = Modifier.size(ButtonDefaults.IconSize)
+                    )
+                    Spacer(Modifier.size(ButtonDefaults.IconSpacing))
+                    Text("Ver Profesionales")
+                }
+                Spacer(modifier = Modifier.height(28.dp))
+
+                Button(onClick = { navController.navigate("remedios") },
+                    modifier = Modifier.size(330.dp,53.dp)) {
+                    Text("Ver Remedios")
+                }
             }
-            Spacer(modifier = Modifier.height(16.dp))
-
-            Button(onClick = { navController.navigate("usuarios") }, modifier = Modifier.fillMaxWidth()) {
-                Icon(
-                    imageVector = Icons.Default.Group,
-                    contentDescription = null,
-                    modifier = Modifier.size(ButtonDefaults.IconSize)
-                )
-                Spacer(Modifier.size(ButtonDefaults.IconSpacing))
-                Text("Ver Usuarios")
-            }
-            Spacer(modifier = Modifier.height(16.dp))
-
-            Button(onClick = { navController.navigate("profesionales") }, modifier = Modifier.fillMaxWidth()) {
-                Icon(
-                    imageVector = Icons.Default.LocalHospital,
-                    contentDescription = null,
-                    modifier = Modifier.size(ButtonDefaults.IconSize)
-                )
-                Spacer(Modifier.size(ButtonDefaults.IconSpacing))
-                Text("Ver Profesionales")
-            }
-            Spacer(modifier = Modifier.height(16.dp))
-
-            Button(onClick = { navController.navigate("remedios") }, modifier = Modifier.fillMaxWidth()) {
-                Text("Remedios")
-            }
-
-            Spacer(modifier = Modifier.weight(1f))
 
             Button(
                 onClick = {
@@ -98,7 +104,7 @@ fun PantallaMenu(
                         popUpTo(navController.graph.startDestinationId) { inclusive = true }
                     }
                 },
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.size(width = 170.dp, height = 48.dp)
             ) {
                 Icon(
                     imageVector = Icons.Default.Logout,
