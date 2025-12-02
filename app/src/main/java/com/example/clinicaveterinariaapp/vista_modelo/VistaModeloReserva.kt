@@ -8,6 +8,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.clinicaveterinariaapp.datos.EstadoReserva
 import com.example.clinicaveterinariaapp.datos.Reserva
+import com.example.clinicaveterinariaapp.api.ReservaApiRepository
+import com.example.clinicaveterinariaapp.api.ReservaApiService
+import com.example.clinicaveterinariaapp.api.ReservaDto
+import com.example.clinicaveterinariaapp.api.RetrofitClient
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
@@ -17,6 +21,9 @@ import java.util.Locale
 import java.util.UUID
 
 class VistaModeloReserva : ViewModel() {
+    private val apiService: ReservaApiService = RetrofitClient.instance.create(ReservaApiService::class.java)
+    private val apiRepo = ReservaApiRepository(apiService)
+
     var nombreMascota by mutableStateOf("")
         private set
     var nombrePropietario by mutableStateOf("")
@@ -147,6 +154,117 @@ class VistaModeloReserva : ViewModel() {
         } else {
             onResultado(false, "No se encontró la reserva")
         }
+    }
+
+    // -------- Consumo API --------
+    fun cargarReservas(onResultado: (Boolean, String?) -> Unit = { _, _ -> }) {
+        estaCargando = true
+        viewModelScope.launch {
+            try {
+                val resp = apiRepo.obtenerTodas()
+                if (resp.isSuccessful) {
+                    val body = resp.body().orEmpty()
+                    _reservas.clear()
+                    body.forEach { dto ->
+                        _reservas.add(dtoToReserva(dto))
+                    }
+                    onResultado(true, null)
+                } else {
+                    onResultado(false, "Error API: ${resp.code()}")
+                }
+            } catch (e: Exception) {
+                onResultado(false, e.message)
+            } finally {
+                estaCargando = false
+            }
+        }
+    }
+
+    fun crearReservaRemota(onResultado: (Boolean, String?) -> Unit) {
+        if (!validarTodo()) { onResultado(false, "Por favor, corrige los errores."); return }
+        estaCargando = true
+        viewModelScope.launch {
+            try {
+                val dto = ReservaDto(
+                    id = null,
+                    nombreMascota = nombreMascota,
+                    nombrePropietario = nombrePropietario,
+                    contacto = contacto,
+                    fecha = fecha,
+                    hora = hora,
+                    especialista = especialista,
+                    remedio = remedio,
+                    notas = notas.takeIf { it.isNotBlank() },
+                    estado = null
+                )
+                val resp = apiRepo.crear(dto)
+                if (resp.isSuccessful) {
+                    val creado = resp.body()
+                    if (creado != null) {
+                        _reservas.add(0, dtoToReserva(creado))
+                        limpiarFormulario()
+                        onResultado(true, "Reserva creada con éxito")
+                    } else onResultado(false, "Respuesta vacía")
+                } else {
+                    onResultado(false, "Error API: ${resp.code()}")
+                }
+            } catch (e: Exception) {
+                onResultado(false, e.message)
+            } finally {
+                estaCargando = false
+            }
+        }
+    }
+
+    fun cancelarReservaRemota(id: String, onResultado: (Boolean, String?) -> Unit) {
+        val actual = _reservas.find { it.id == id }
+        if (actual == null) { onResultado(false, "No se encontró la reserva"); return }
+        estaCargando = true
+        viewModelScope.launch {
+            try {
+                val dto = ReservaDto(
+                    id = id,
+                    nombreMascota = actual.nombreMascota,
+                    nombrePropietario = actual.nombrePropietario,
+                    contacto = actual.contacto,
+                    fecha = actual.fecha,
+                    hora = actual.hora,
+                    especialista = actual.especialista,
+                    remedio = actual.remedio,
+                    notas = actual.notas,
+                    estado = "CANCELADA"
+                )
+                val resp = apiRepo.actualizar(id, dto)
+                if (resp.isSuccessful) {
+                    val actualizado = resp.body()?.let { dtoToReserva(it) } ?: actual.copy(estado = EstadoReserva.CANCELADA)
+                    val idx = _reservas.indexOfFirst { it.id == id }
+                    if (idx != -1) _reservas[idx] = actualizado
+                    onResultado(true, "Reserva cancelada")
+                } else {
+                    onResultado(false, "Error API: ${resp.code()}")
+                }
+            } catch (e: Exception) {
+                onResultado(false, e.message)
+            } finally {
+                estaCargando = false
+            }
+        }
+    }
+
+    private fun dtoToReserva(dto: ReservaDto): Reserva {
+        val estadoEnum = try { dto.estado?.let { EstadoReserva.valueOf(it) } ?: EstadoReserva.AGENDADA } catch (_: Exception) { EstadoReserva.AGENDADA }
+        return Reserva(
+            id = dto.id ?: UUID.randomUUID().toString(),
+            nombreMascota = dto.nombreMascota,
+            nombrePropietario = dto.nombrePropietario,
+            contacto = dto.contacto,
+            fecha = dto.fecha,
+            hora = dto.hora,
+            especialista = dto.especialista,
+            remedio = dto.remedio,
+            notas = dto.notas,
+            estado = estadoEnum
+        )
     }
 
     fun limpiarFormulario() {

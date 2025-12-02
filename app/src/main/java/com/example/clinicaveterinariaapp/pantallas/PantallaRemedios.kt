@@ -32,6 +32,7 @@ fun PantallaRemedios() {
             .padding(innerPadding)
             .padding(16.dp)
         ) {
+            LaunchedEffect(Unit) { vm.cargarRemedios() }
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 Button(onClick = { vm.cargarRemedios() }) { Text("Refrescar") }
             }

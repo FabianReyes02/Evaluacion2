@@ -42,9 +42,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.clinicaveterinariaapp.datos.EstadoReserva
-import com.example.clinicaveterinariaapp.datos.RepositorioProfesionales
 import com.example.clinicaveterinariaapp.vista_modelo.VistaModeloRemedios
 import com.example.clinicaveterinariaapp.vista_modelo.VistaModeloReserva
+import com.example.clinicaveterinariaapp.vista_modelo.VistaModeloProfesionales
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -53,14 +53,19 @@ import java.util.Locale
 @Composable
 fun PantallaReservas(vm: VistaModeloReserva, innerPadding: PaddingValues, onShowSnackbar: (String) -> Unit) {
 
-    val especialistas = RepositorioProfesionales.obtenerNombres()
+    val profesionalesVm: VistaModeloProfesionales = viewModel()
+    val especialistas = profesionalesVm.lista.map { it.nombre }
     var menuEspecialista by remember { mutableStateOf(false) }
 
     // Remedios ViewModel
     val remediosVm: VistaModeloRemedios = viewModel()
     var menuRemedios by remember { mutableStateOf(false) }
     // cargar remedios una vez
-    LaunchedEffect(Unit) { remediosVm.cargarRemedios() }
+    LaunchedEffect(Unit) {
+        remediosVm.cargarRemedios()
+        if (profesionalesVm.lista.isEmpty()) profesionalesVm.cargarDesdeApi { _, _ -> }
+        vm.cargarReservas { _, _ -> }
+    }
 
     Column(
         modifier = Modifier
@@ -178,7 +183,7 @@ fun PantallaReservas(vm: VistaModeloReserva, innerPadding: PaddingValues, onShow
             }, enabled = !vm.estaCargando, modifier = Modifier.weight(1f)) {
                 Text("Hoy y ahora")
             }
-            Button(onClick = { vm.crearReserva { exito, msg -> onShowSnackbar(msg ?: "Error") } }, enabled = !vm.estaCargando, modifier = Modifier.weight(1f)) {
+            Button(onClick = { vm.crearReservaRemota { exito, msg -> onShowSnackbar(msg ?: if (exito) "Reserva creada" else "Error") } }, enabled = !vm.estaCargando, modifier = Modifier.weight(1f)) {
                 if (vm.estaCargando) {
                     CircularProgressIndicator(modifier = Modifier.size(24.dp), color = MaterialTheme.colorScheme.onPrimary, strokeWidth = 2.dp)
                 } else {
@@ -209,7 +214,7 @@ fun PantallaReservas(vm: VistaModeloReserva, innerPadding: PaddingValues, onShow
                                 r.remedio?.let { Text("Remedio: $it", style = MaterialTheme.typography.bodySmall) }
                             }
                             if (r.estado == EstadoReserva.AGENDADA) {
-                                TextButton(onClick = { vm.cancelarReserva(r.id) { _, msg -> onShowSnackbar(msg ?: "Error") } }) { Text("Cancelar") }
+                                TextButton(onClick = { vm.cancelarReservaRemota(r.id) { _, msg -> onShowSnackbar(msg ?: "Error") } }) { Text("Cancelar") }
                             }
                         }
                     }
