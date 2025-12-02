@@ -8,18 +8,26 @@ import com.example.clinicaveterinariaapp.api.RemedioApiRepository
 import com.example.clinicaveterinariaapp.api.RemedioApiService
 import com.example.clinicaveterinariaapp.api.RemedioDto
 import com.example.clinicaveterinariaapp.api.RetrofitClient
+import com.example.clinicaveterinariaapp.api.ExternalApiClient
+import com.example.clinicaveterinariaapp.api.VetDrugApiService
 import kotlinx.coroutines.launch
 import java.util.*
 
 class VistaModeloRemedios : ViewModel() {
     private val apiService: RemedioApiService = RetrofitClient.instance.create(RemedioApiService::class.java)
     private val apiRepo = RemedioApiRepository(apiService)
+    private val externalApi: VetDrugApiService = ExternalApiClient.vetDrugService
 
     var remedios = mutableStateListOf<RemedioDto>()
         private set
     var estaCargando = mutableStateOf(false)
         private set
     var errorMsg = mutableStateOf<String?>(null)
+        private set
+    
+    var remediosExternos = mutableStateListOf<String>()
+        private set
+    var cargandoExternos = mutableStateOf(false)
         private set
 
     // Fallback local con la lista que proporcionaste
@@ -97,6 +105,32 @@ class VistaModeloRemedios : ViewModel() {
                 }
             } catch (e: Exception) { onResultado(false, e.message) }
             finally { estaCargando.value = false }
+        }
+    }
+
+    /**
+     * Carga medicamentos veterinarios desde API externa (OpenFDA)
+     */
+    fun cargarRemediosExternos() {
+        cargandoExternos.value = true
+        viewModelScope.launch {
+            try {
+                val resp = externalApi.buscarMedicamentos(limit = 50)
+                if (resp.isSuccessful) {
+                    val drugs = resp.body()?.results
+                        ?.flatMap { it.drug ?: emptyList() }
+                        ?.mapNotNull { it.brand_name ?: it.generic_name }
+                        ?.distinct()
+                        ?.take(30) ?: emptyList()
+                    
+                    remediosExternos.clear()
+                    remediosExternos.addAll(drugs)
+                }
+            } catch (e: Exception) {
+                // Silencioso, la API externa es opcional
+            } finally {
+                cargandoExternos.value = false
+            }
         }
     }
 }

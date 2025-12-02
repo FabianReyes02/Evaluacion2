@@ -10,6 +10,8 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.clinicaveterinariaapp.vista_modelo.VistaModeloRemedios
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.animation.*
+import androidx.compose.animation.core.*
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -71,6 +73,45 @@ fun PantallaRemedios(innerPadding: PaddingValues) {
 
             if (loading) { CircularProgressIndicator() }
             error?.let { Text("Error: $it", color = MaterialTheme.colorScheme.error) }
+
+            // Sección de API externa
+            if (vm.cargandoExternos.value) {
+                CircularProgressIndicator(modifier = Modifier.padding(8.dp))
+            } else if (vm.remediosExternos.isNotEmpty()) {
+                Text(
+                    "Medicamentos de FDA (${vm.remediosExternos.size})",
+                    style = MaterialTheme.typography.titleMedium,
+                    modifier = Modifier.padding(vertical = 8.dp)
+                )
+                Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    elevation = CardDefaults.cardElevation(1.dp)
+                ) {
+                    Column(modifier = Modifier.padding(12.dp)) {
+                        vm.remediosExternos.take(5).forEach { drug ->
+                            Text(
+                                "• $drug",
+                                style = MaterialTheme.typography.bodySmall,
+                                modifier = Modifier.padding(vertical = 2.dp)
+                            )
+                        }
+                        if (vm.remediosExternos.size > 5) {
+                            Text(
+                                "...y ${vm.remediosExternos.size - 5} más",
+                                style = MaterialTheme.typography.bodySmall,
+                                color = MaterialTheme.colorScheme.secondary
+                            )
+                        }
+                    }
+                }
+                Spacer(modifier = Modifier.height(12.dp))
+            }
+
+            Text(
+                "Mi Inventario (${vm.remedios.size})",
+                style = MaterialTheme.typography.titleMedium
+            )
+            Spacer(modifier = Modifier.height(8.dp))
 
             LazyColumn(modifier = Modifier.fillMaxSize()) {
                 items(vm.remedios) { r ->

@@ -9,31 +9,34 @@ import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.material3.Text
 
 private val DarkColorScheme = darkColorScheme(
-    primary = ButtonColor,
+    primary = VetPrimary,
     onPrimary = ButtonOnColor,
-    secondary = PurpleGrey80,
-    tertiary = Pink80
+    secondary = VetSecondary,
+    tertiary = VetAccent,
+    background = Color(0xFF1B1B1B),
+    surface = Color(0xFF2C2C2C),
+    error = VetError
 )
 
 private val LightColorScheme = lightColorScheme(
-    primary = ButtonColor,
+    primary = VetPrimary,
     onPrimary = ButtonOnColor,
-    secondary = PurpleGrey40,
-    tertiary = Pink40
-
-    /* Other default colors to override
-    background = Color(0xFFFFFBFE),
-    surface = Color(0xFFFFFBFE),
+    primaryContainer = Color(0xFFC8E6C9),
+    onPrimaryContainer = VetPrimaryDark,
+    secondary = VetSecondary,
     onSecondary = Color.White,
-    onTertiary = Color.White,
+    tertiary = VetAccent,
+    background = VetBackground,
+    surface = VetSurface,
+    error = VetError,
     onBackground = Color(0xFF1C1B1F),
-    onSurface = Color(0xFF1C1B1F),
-    */
+    onSurface = Color(0xFF1C1B1F)
 )
 
 @Suppress("unused")

@@ -45,6 +45,14 @@ import com.example.clinicaveterinariaapp.datos.EstadoReserva
 import com.example.clinicaveterinariaapp.vista_modelo.VistaModeloRemedios
 import com.example.clinicaveterinariaapp.vista_modelo.VistaModeloReserva
 import com.example.clinicaveterinariaapp.vista_modelo.VistaModeloProfesionales
+import com.example.clinicaveterinariaapp.ui.theme.EstadoAgendada
+import com.example.clinicaveterinariaapp.ui.theme.EstadoCancelada
+import com.example.clinicaveterinariaapp.ui.theme.EstadoCumplida
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -207,9 +215,9 @@ fun PantallaReservas(vm: VistaModeloReserva, innerPadding: PaddingValues, onShow
                                 Text("${r.nombreMascota} - ${r.nombrePropietario}", style = MaterialTheme.typography.bodyLarge)
                                 Text("${r.fecha} ${r.hora} - ${r.especialista}", style = MaterialTheme.typography.bodySmall)
                                 Text("Estado: ${r.estado}", style = MaterialTheme.typography.bodySmall, color = when (r.estado) {
-                                    EstadoReserva.AGENDADA -> MaterialTheme.colorScheme.primary
-                                    EstadoReserva.CANCELADA -> MaterialTheme.colorScheme.error
-                                    EstadoReserva.CUMPLIDA -> MaterialTheme.colorScheme.secondary
+                                    EstadoReserva.AGENDADA -> EstadoAgendada
+                                    EstadoReserva.CANCELADA -> EstadoCancelada
+                                    EstadoReserva.CUMPLIDA -> EstadoCumplida
                                 })
                                 r.remedio?.let { Text("Remedio: $it", style = MaterialTheme.typography.bodySmall) }
                             }
